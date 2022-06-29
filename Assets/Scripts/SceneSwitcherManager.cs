@@ -3,18 +3,32 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
+
 public class SceneSwitcherManager : MonoBehaviour
-{    
+{
+    public static SceneSwitcherManager Instance;
+    #region Unity Methods
+    private void Awake()
+    {
+        Instance = this;
+    }
+    #endregion
+
+    #region Public methods
     public void LoadMainMenuScene()
     {
-        LoadScene("0-MainMenuScene");
+        LoadScene(SceneRefs.MainMenu);
     }
     public void LoadGameScene()
     {
-        LoadScene("1-GameScene");
+        LoadScene(SceneRefs.GameScene);
     }
+    #endregion
+
+    #region Private methods 
     private void LoadScene(string value)
     {
         SceneManager.LoadScene(value);
     }
+    #endregion
 }
