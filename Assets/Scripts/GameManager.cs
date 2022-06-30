@@ -12,6 +12,8 @@ public class GameManager : MonoBehaviour
     #region Variables
     public static GameManager Instance;
     [SerializeField] private bool isPlayingGame;
+    public bool stopSpawning;
+    public float horizontalLimit;
     [SerializeField] private int score;
     #endregion   
 

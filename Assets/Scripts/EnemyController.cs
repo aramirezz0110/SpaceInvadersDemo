@@ -17,7 +17,7 @@ public class EnemyController : MonoBehaviour
     {
         SetDamageResistance();
     }
-    private void Update()
+    private void LateUpdate()
     {
         Movement();
     }
@@ -40,18 +40,7 @@ public class EnemyController : MonoBehaviour
     }
     private void IncreasePlayerScore()
     {
-        if(enemyRarity == EnemyRarity.Green)
-        {
-            GameManager.Instance.IncreaseScore(1);
-        }
-        if(enemyRarity == EnemyRarity.Blue)
-        {
-            GameManager.Instance.IncreaseScore(2);
-        }
-        if(enemyRarity == EnemyRarity.Red)
-        {
-            GameManager.Instance.IncreaseScore(3);
-        }
+        GameManager.Instance.IncreaseScore(damageResistance);
     }
     private void Movement()
     {
@@ -69,11 +58,7 @@ public class EnemyController : MonoBehaviour
     #endregion
     #region Unity Callbacks
     private void OnTriggerEnter2D(Collider2D other)
-    {
-        if(other.gameObject.tag == GameTags.Player)
-        {
-            Destroy(other.gameObject);
-        }
+    {        
         if(other.gameObject.tag == GameTags.Laser)
         {
             TakeDamageByRarity();
