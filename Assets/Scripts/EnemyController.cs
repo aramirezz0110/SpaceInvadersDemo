@@ -10,6 +10,7 @@ public class EnemyController : MonoBehaviour
     [SerializeField] private EnemyRarity enemyRarity;
     [SerializeField] private float speed = 4.0f;
     private int damageResistance;
+    private int scoreIncreaseRef;
     //private float
     #endregion
     #region Unity Methods
@@ -17,7 +18,7 @@ public class EnemyController : MonoBehaviour
     {
         SetDamageResistance();
     }
-    private void LateUpdate()
+    private void FixedUpdate()
     {
         Movement();
     }
@@ -37,22 +38,23 @@ public class EnemyController : MonoBehaviour
         {
             damageResistance = 3;
         }
+        scoreIncreaseRef = damageResistance;
     }
     private void IncreasePlayerScore()
     {
-        GameManager.Instance.IncreaseScore(damageResistance);
+        GameManager.Instance.IncreaseScore(scoreIncreaseRef);
     }
     private void Movement()
     {
-        transform.Translate(Vector3.down * speed* Time.deltaTime);        
+        transform.Translate(Vector3.down *speed* Time.fixedDeltaTime);        
     }
-    private void TakeDamageByRarity()
-    {
-        damageResistance--;
+    private void TakeDamage()
+    {        
+        --damageResistance;        
         if (damageResistance == 0)
         {
-            Destroy(this.gameObject);
             IncreasePlayerScore();
+            Destroy(this.gameObject);            
         }
     }
     #endregion
@@ -61,11 +63,16 @@ public class EnemyController : MonoBehaviour
     {        
         if(other.gameObject.tag == GameTags.Laser)
         {
-            TakeDamageByRarity();
+            TakeDamage();
         }
         if(other.gameObject.tag == GameTags.DeadZone)
         {
             Destroy(this.gameObject);
+        }
+        if(other.gameObject.tag == GameTags.Player)
+        {
+            Destroy(other.gameObject);
+            GameManager.Instance.SetGameOver();
         }
     }
     #endregion

@@ -8,6 +8,7 @@ public class MainMenuManager : MonoBehaviour
     #region References 
     [Header("UI Selector Screen")]
     public GameObject selectorScreenPanel;
+    public TMP_Text highScoreText;
     public Button level1Button;
     public Button level2Button;
     public Button creditsButton;
@@ -20,6 +21,7 @@ public class MainMenuManager : MonoBehaviour
     private void Start()
     {
         ActivatePanel(selectorScreenPanel.name);
+        GetHighScore();
 
         level1Button.onClick.AddListener(()=>LoadScene(1));
         level2Button.onClick.AddListener(()=>LoadScene(2));
@@ -40,6 +42,10 @@ public class MainMenuManager : MonoBehaviour
         PersistentData.Instance.levelSelected = index;
         SceneSwitcherManager.Instance.LoadGameScene();
     }
-    
+    private void GetHighScore()
+    {
+        string tempScore = PlayerPrefs.GetInt(PlayerRefs.Score, 0).ToString();
+        highScoreText.text = "HIGHSCORE: " + tempScore;
+    }
     #endregion
 }
