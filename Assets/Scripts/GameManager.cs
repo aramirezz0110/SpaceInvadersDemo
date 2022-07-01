@@ -6,6 +6,9 @@ using TMPro;
 public class GameManager : MonoBehaviour
 {
     #region References 
+    [Header("Levels Settings")]
+    [SerializeField] private LevelsSettings levelsSettings;
+    public LevelSettings levelSettings;
     [Header("Player HUD Canvas")]
     [SerializeField] private GameObject playerHUDCanvas;
     [SerializeField] private TMP_Text scoreText;
@@ -31,9 +34,11 @@ public class GameManager : MonoBehaviour
     private void Awake()
     {
         Instance = this;
+        levelSettings = levelsSettings.GetLevelSettings(PersistentData.Instance.levelSelected);
     }
     private void Start()
-    {
+    {       
+
         pauseButton.onClick.AddListener(OnPauseButtonClicked);
 
         backToGameButton.onClick.AddListener(OnBackToGameButtonClicked);
@@ -97,8 +102,7 @@ public class GameManager : MonoBehaviour
     }
     private void SaveScoreOnPlayerPrefs()
     {
-        PlayerPrefs.SetInt(PlayerRefs.Score, score);
-        print("Score saved on PlayerPrefs, Score: "+ score);
+        PlayerPrefs.SetInt(PlayerRefs.Score, score);        
     }
     private void ActivateCanvas(string canvasName)
     {

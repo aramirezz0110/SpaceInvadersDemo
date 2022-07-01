@@ -5,7 +5,7 @@ using UnityEngine;
 public class PersistentData : MonoBehaviour
 {
     public static PersistentData Instance;
-    private int _levelSelected;
+    private int _levelSelected=1;
     public int levelSelected 
     { 
         get { return _levelSelected; } 

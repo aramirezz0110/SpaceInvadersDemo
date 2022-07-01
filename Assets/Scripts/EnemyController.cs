@@ -9,6 +9,7 @@ public class EnemyController : MonoBehaviour
     [Header("Enemy Variables")]
     [SerializeField] private EnemyRarity enemyRarity;
     [SerializeField] private float speed = 4.0f;
+    GameManager gameManagerInstance;
     private int damageResistance;
     private int scoreIncreaseRef;
     //private float
@@ -16,7 +17,8 @@ public class EnemyController : MonoBehaviour
     #region Unity Methods
     private void Start()
     {
-        SetDamageResistance();
+        gameManagerInstance = GameManager.Instance;
+        SettingsByRarity();
     }
     private void FixedUpdate()
     {
@@ -24,19 +26,22 @@ public class EnemyController : MonoBehaviour
     }
     #endregion
     #region Private Methods
-    private void SetDamageResistance()
+    private void SettingsByRarity()
     {
         if(enemyRarity == EnemyRarity.Green)
         {
             damageResistance = 1;
+            speed = gameManagerInstance.levelSettings.greenEnemySpeed;
         }
         if(enemyRarity == EnemyRarity.Blue)
         {
             damageResistance = 2;
+            speed = gameManagerInstance.levelSettings.blueEnemySpeed;
         }
         if(enemyRarity == EnemyRarity.Red)
         {
             damageResistance = 3;
+            speed = gameManagerInstance.levelSettings.redEnemySpeed;
         }
         scoreIncreaseRef = damageResistance;
     }
