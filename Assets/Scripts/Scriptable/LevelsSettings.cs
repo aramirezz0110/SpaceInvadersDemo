@@ -23,6 +23,7 @@ public class LevelsSettings : ScriptableObject
 public class LevelSettings
 {
     public int level;
+    public Sprite backGroundImage;
     [Header("Enemies speed")]
     public float greenEnemySpeed;
     public float blueEnemySpeed;

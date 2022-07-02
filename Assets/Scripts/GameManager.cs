@@ -19,7 +19,8 @@ public class GameManager : MonoBehaviour
     [SerializeField] private TMP_Text gameScoreText;
     [SerializeField] private Button backToGameButton;
     [SerializeField] private Button backToMainButton;
-    
+    [Header("Background References")]
+    [SerializeField] private Image gameBackGround;
 
     #endregion
 
@@ -28,11 +29,10 @@ public class GameManager : MonoBehaviour
     [HideInInspector] public float horizontalLimit;
     [HideInInspector] public bool isPlayingGame;
     [HideInInspector] public bool stopSpawning;
-    [HideInInspector] private bool gameOver;
-    private int score=0;
-
-    public float inferiorLimit;
-    public float superiorLimit;
+    [HideInInspector] private bool gameOver;    
+    [HideInInspector] public float inferiorLimit;
+    [HideInInspector] public float superiorLimit;
+    private int score = 0;
     #endregion   
 
     #region Unity Methods
@@ -50,9 +50,9 @@ public class GameManager : MonoBehaviour
 
         backToGameButton.onClick.AddListener(OnBackToGameButtonClicked);
         backToMainButton.onClick.AddListener(OnBackToMainButtonClicked);
-        
-        IncreaseScore(0);
 
+        SetGameBackground();
+        IncreaseScore(0);
         CalculateDistances();
     }
     #endregion   
@@ -130,6 +130,10 @@ public class GameManager : MonoBehaviour
     {
         inferiorLimit = GameObject.Find(GameTags.Player).transform.position.y;
         superiorLimit = GameObject.Find("EnemyOrigin").transform.position.y;
+    }
+    private void SetGameBackground()
+    {
+        gameBackGround.sprite = levelSettings.backGroundImage;
     }
     #endregion
 }
