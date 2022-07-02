@@ -23,7 +23,13 @@ public class LevelsSettings : ScriptableObject
 public class LevelSettings
 {
     public int level;
+    [Header("Enemies speed")]
     public float greenEnemySpeed;
     public float blueEnemySpeed;
     public float redEnemySpeed;
+    [Header("Enemies spawn wait time")]
+    public float greenEnemySpawnWaitTime;    
+    public float blueEnemySpawnWaitTime;    
+    public float redEnemySpawnWaitTime;
+    public float scaleFactor;
 }

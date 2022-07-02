@@ -19,15 +19,20 @@ public class GameManager : MonoBehaviour
     [SerializeField] private TMP_Text gameScoreText;
     [SerializeField] private Button backToGameButton;
     [SerializeField] private Button backToMainButton;
+    
+
     #endregion
 
     #region Variables
-    public static GameManager Instance;
-    [SerializeField] private bool isPlayingGame;
-    public bool stopSpawning;
-    private bool gameOver;
-    public float horizontalLimit;
-    [SerializeField] private int score=0;
+    public static GameManager Instance;    
+    [HideInInspector] public float horizontalLimit;
+    [HideInInspector] public bool isPlayingGame;
+    [HideInInspector] public bool stopSpawning;
+    [HideInInspector] private bool gameOver;
+    private int score=0;
+
+    public float inferiorLimit;
+    public float superiorLimit;
     #endregion   
 
     #region Unity Methods
@@ -35,17 +40,20 @@ public class GameManager : MonoBehaviour
     {
         Instance = this;
         levelSettings = levelsSettings.GetLevelSettings(PersistentData.Instance.levelSelected);
+        ActivateCanvas(playerHUDCanvas.name);
     }
     private void Start()
-    {       
+    {
+        isPlayingGame = true;
 
         pauseButton.onClick.AddListener(OnPauseButtonClicked);
 
         backToGameButton.onClick.AddListener(OnBackToGameButtonClicked);
         backToMainButton.onClick.AddListener(OnBackToMainButtonClicked);
-
-        ActivateCanvas(playerHUDCanvas.name);
+        
         IncreaseScore(0);
+
+        CalculateDistances();
     }
     #endregion   
     #region Public Methods
@@ -61,6 +69,7 @@ public class GameManager : MonoBehaviour
         Time.timeScale = 0;
         stopSpawning = true;
         gameOver = true;
+        isPlayingGame = false;
         SaveScoreOnPlayerPrefs();
 
         TMP_Text tempText = backToGameButton.GetComponentInChildren<TMP_Text>();
@@ -70,12 +79,20 @@ public class GameManager : MonoBehaviour
         }
         ActivateCanvas(gameStatusCanvas.name);
     }
+    public bool IsMobilePlatform()
+    {
+        if (Application.platform == RuntimePlatform.Android || Application.platform == RuntimePlatform.IPhonePlayer)
+            return true;
+        else
+            return false;
+    }
     #endregion
 
     #region Private Methods
     private void OnPauseButtonClicked()
     {
         Time.timeScale = 0;
+        isPlayingGame = false;
         gameStateText.text = "PAUSE";
         gameScoreText.text = "SCORE: " + score;
         ActivateCanvas(gameStatusCanvas.name);
@@ -108,6 +125,11 @@ public class GameManager : MonoBehaviour
     {
         playerHUDCanvas.SetActive(playerHUDCanvas.name.Equals(canvasName));
         gameStatusCanvas.SetActive(gameStatusCanvas.name.Equals(canvasName));
+    }
+    private void CalculateDistances()
+    {
+        inferiorLimit = GameObject.Find(GameTags.Player).transform.position.y;
+        superiorLimit = GameObject.Find("EnemyOrigin").transform.position.y;
     }
     #endregion
 }

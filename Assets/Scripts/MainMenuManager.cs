@@ -12,10 +12,14 @@ public class MainMenuManager : MonoBehaviour
     public Button level1Button;
     public Button level2Button;
     public Button creditsButton;
+    public Button configButton;
     [Header("UI Credits Screen")]
     public GameObject creditsScreenPanel;
     public Button backToSelectorScreen;
-
+    [Header("Config Screen")]
+    public GameObject configScreenPanel;
+    public Button backToSelectorScreen2;
+    public Button deleteHighScoreButton;
     #endregion
     #region Unity Methods
     private void Start()
@@ -26,8 +30,12 @@ public class MainMenuManager : MonoBehaviour
         level1Button.onClick.AddListener(()=>LoadScene(1));
         level2Button.onClick.AddListener(()=>LoadScene(2));
         creditsButton.onClick.AddListener(() => ActivatePanel(creditsScreenPanel.name));
+        configButton.onClick.AddListener(()=>ActivatePanel(configScreenPanel.name));
 
-        backToSelectorScreen.onClick.AddListener(()=>ActivatePanel(selectorScreenPanel.name));
+        backToSelectorScreen.onClick.AddListener(()=>ActivatePanel(selectorScreenPanel.name));   
+        
+        backToSelectorScreen2.onClick.AddListener(()=>ActivatePanel(selectorScreenPanel.name));
+        deleteHighScoreButton.onClick.AddListener(DeleteHighScore);
     }
     #endregion
 
@@ -36,6 +44,7 @@ public class MainMenuManager : MonoBehaviour
     {
         selectorScreenPanel.SetActive(selectorScreenPanel.name.Equals(name));
         creditsScreenPanel.SetActive(creditsScreenPanel.name.Equals(name));
+        configScreenPanel.SetActive(configScreenPanel.name.Equals(name));
     }
     private void LoadScene(int index)
     {
@@ -46,6 +55,11 @@ public class MainMenuManager : MonoBehaviour
     {
         string tempScore = PlayerPrefs.GetInt(PlayerRefs.Score, 0).ToString();
         highScoreText.text = "HIGHSCORE: " + tempScore;
+    }
+    private void DeleteHighScore()
+    {
+        PlayerPrefs.SetInt(PlayerRefs.Score,0);
+        highScoreText.text = "HIGHSCORE: " + 0;
     }
     #endregion
 }

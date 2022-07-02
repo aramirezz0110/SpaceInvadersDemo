@@ -20,7 +20,7 @@ public class EnemyController : MonoBehaviour
         gameManagerInstance = GameManager.Instance;
         SettingsByRarity();
     }
-    private void FixedUpdate()
+    private void Update()
     {
         Movement();
     }
@@ -47,11 +47,29 @@ public class EnemyController : MonoBehaviour
     }
     private void IncreasePlayerScore()
     {
-        GameManager.Instance.IncreaseScore(scoreIncreaseRef);
+        float limitDifference = gameManagerInstance.superiorLimit - Mathf.Abs(gameManagerInstance.inferiorLimit);
+        float topSectionLimit = limitDifference - limitDifference/3;
+        float secondSectionLimit = limitDifference - ((limitDifference / 3) * 2);        
+        if (transform.position.y< gameManagerInstance.superiorLimit && transform.position.y > topSectionLimit)
+        {
+            GameManager.Instance.IncreaseScore(scoreIncreaseRef*3);
+            print("score x3");
+        }
+        else if(transform.position.y<topSectionLimit && transform.position.y<secondSectionLimit)
+        {
+            GameManager.Instance.IncreaseScore(scoreIncreaseRef * 2);
+            print("score x2");
+        }
+        else if (transform.position.y<secondSectionLimit)
+        {
+            GameManager.Instance.IncreaseScore(scoreIncreaseRef);
+            print("score x1");
+        }
+        
     }
     private void Movement()
     {
-        transform.Translate(Vector3.down *speed* Time.fixedDeltaTime);        
+        transform.Translate(Vector3.down *speed* Time.deltaTime);        
     }
     private void TakeDamage()
     {        

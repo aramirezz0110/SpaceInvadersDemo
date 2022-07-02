@@ -14,10 +14,18 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   levelsSettings:
   - level: 1
-    greenEnemySpeed: 0.05
-    blueEnemySpeed: 0.05
-    redEnemySpeed: 0.05
+    greenEnemySpeed: 3
+    blueEnemySpeed: 3
+    redEnemySpeed: 3
+    greenEnemySpawnWaitTime: 2
+    blueEnemySpawnWaitTime: 3
+    redEnemySpawnWaitTime: 4
+    scaleFactor: 0
   - level: 2
-    greenEnemySpeed: 0.07
-    blueEnemySpeed: 0.07
-    redEnemySpeed: 0.07
+    greenEnemySpeed: 4
+    blueEnemySpeed: 4
+    redEnemySpeed: 4
+    greenEnemySpawnWaitTime: 1.5
+    blueEnemySpawnWaitTime: 2.5
+    redEnemySpawnWaitTime: 3.5
+    scaleFactor: 0.05
