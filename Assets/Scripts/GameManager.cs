@@ -21,7 +21,8 @@ public class GameManager : MonoBehaviour
     [SerializeField] private Button backToMainButton;
     [Header("Background References")]
     [SerializeField] private Image gameBackGround;
-
+    [Header("Power up references")]
+    public GameObject tripleShotPowerUp;
     #endregion
 
     #region Variables

@@ -780,6 +780,37 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 50, y: -30, z: 0}
+--- !u!1 &711697576
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 711697577}
+  m_Layer: 0
+  m_Name: LeftLaserOrigin
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &711697577
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 711697576}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -1.55, y: -1, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1892125102}
+  m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &751678402
 GameObject:
   m_ObjectHideFlags: 0
@@ -1846,6 +1877,37 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 9
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1148185580
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1148185581}
+  m_Layer: 0
+  m_Name: RightLaserOrigin
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1148185581
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1148185580}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 1.55, y: -1, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1892125102}
+  m_RootOrder: 2
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1164676593
 GameObject:
   m_ObjectHideFlags: 0
@@ -2213,7 +2275,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1477979731}
   m_Layer: 0
-  m_Name: LaserOrigin
+  m_Name: CentralLaserOrigin
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2979,7 +3041,9 @@ MonoBehaviour:
   isMobilePlatform: 0
   playerOrigin: {fileID: 1238043302}
   laserPrefab: {fileID: 5989247361266076154, guid: 264c349987f29574bab1e24cb513fdc3, type: 3}
-  laserOrigin: {fileID: 1477979731}
+  centralLaserOrigin: {fileID: 1477979731}
+  leftLaserOrigin: {fileID: 711697577}
+  rightLaserOrigin: {fileID: 1148185581}
   mobileControllersContainer: {fileID: 849481775}
   moveLeftButton: {fileID: 935856309}
   moveRigthButton: {fileID: 599340157}
@@ -3070,11 +3134,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1892125098}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.38, y: -1.37, z: 0}
+  m_LocalPosition: {x: 0, y: -1.37, z: 0}
   m_LocalScale: {x: 0.5, y: 0.5, z: 0.5}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1477979731}
+  - {fileID: 711697577}
+  - {fileID: 1148185581}
   m_Father: {fileID: 0}
   m_RootOrder: 14
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -3127,6 +3193,7 @@ MonoBehaviour:
   backToGameButton: {fileID: 1356193761}
   backToMainButton: {fileID: 422813963}
   gameBackGround: {fileID: 1506398219}
+  tripleShotPowerUp: {fileID: 5935769877604143725, guid: 67fc2c47f90a81c4d89d6c55047cde45, type: 3}
   horizontalLimit: 12
   isPlayingGame: 0
   stopSpawning: 0

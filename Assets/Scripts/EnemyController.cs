@@ -12,6 +12,7 @@ public class EnemyController : MonoBehaviour
     GameManager gameManagerInstance;
     private int damageResistance;
     private int scoreIncreaseRef;
+    private bool instancePowerUp;
     //private float
     #endregion
     #region Unity Methods
@@ -19,6 +20,7 @@ public class EnemyController : MonoBehaviour
     {
         gameManagerInstance = GameManager.Instance;
         SettingsByRarity();
+        CalculatePowerUpSpawnProbability();
     }
     private void Update()
     {
@@ -52,20 +54,16 @@ public class EnemyController : MonoBehaviour
         float secondSectionLimit = limitDifference - ((limitDifference / 3) * 2);        
         if (transform.position.y< gameManagerInstance.superiorLimit && transform.position.y > topSectionLimit)
         {
-            GameManager.Instance.IncreaseScore(scoreIncreaseRef*3);
-            print("score x3");
+            GameManager.Instance.IncreaseScore(scoreIncreaseRef*3);            
         }
         else if(transform.position.y<topSectionLimit && transform.position.y<secondSectionLimit)
         {
-            GameManager.Instance.IncreaseScore(scoreIncreaseRef * 2);
-            print("score x2");
+            GameManager.Instance.IncreaseScore(scoreIncreaseRef * 2);            
         }
         else if (transform.position.y<secondSectionLimit)
         {
-            GameManager.Instance.IncreaseScore(scoreIncreaseRef);
-            print("score x1");
-        }
-        
+            GameManager.Instance.IncreaseScore(scoreIncreaseRef);           
+        }        
     }
     private void Movement()
     {
@@ -77,6 +75,10 @@ public class EnemyController : MonoBehaviour
         if (damageResistance == 0)
         {
             IncreasePlayerScore();
+            if (instancePowerUp)
+            {
+                Instantiate(gameManagerInstance.tripleShotPowerUp, transform.position, transform.rotation);
+            }
             Destroy(this.gameObject);            
         }
     }
@@ -93,9 +95,35 @@ public class EnemyController : MonoBehaviour
             Destroy(this.gameObject);
         }
         if(other.gameObject.tag == GameTags.Player)
-        {
-            Destroy(other.gameObject);
+        {            
             GameManager.Instance.SetGameOver();
+            Destroy(other.gameObject);            
+        }
+    }
+    private void CalculatePowerUpSpawnProbability()
+    {
+        int powerUpProbability = Random.Range(0,11);
+        if (powerUpProbability != 0)
+        {
+            if (enemyRarity == EnemyRarity.Green)
+            {
+                if (powerUpProbability == 1)
+                    instancePowerUp = true;
+            }
+            if (enemyRarity == EnemyRarity.Blue)
+            {
+                if (powerUpProbability == 1 || powerUpProbability == 2)
+                    instancePowerUp = true;
+            }
+            if (enemyRarity == EnemyRarity.Red)
+            {
+                if (powerUpProbability > 0 && powerUpProbability < 4)
+                    instancePowerUp = true;
+            }
+        }
+        else
+        {
+            instancePowerUp = false;
         }
     }
     #endregion

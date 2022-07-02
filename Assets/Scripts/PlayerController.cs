@@ -26,7 +26,9 @@ public class PlayerController : MonoBehaviour
     [Header("Player References")]
     [SerializeField] private Transform playerOrigin;
     [SerializeField] private GameObject laserPrefab;
-    [SerializeField] private Transform laserOrigin;
+    [SerializeField] private Transform centralLaserOrigin;
+    [SerializeField] private Transform leftLaserOrigin;
+    [SerializeField] private Transform rightLaserOrigin;
 
     [Header("Mobile Game Controller Canvas")]
     [SerializeField] private GameObject mobileControllersContainer;
@@ -35,7 +37,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private Button shotButton;
     #endregion
 
-    //TODO: limit movement using screen size
+    
     #region Unity Methods
     private void Start()
     {
@@ -59,11 +61,7 @@ public class PlayerController : MonoBehaviour
 
     #region Private Methods
     private void CalculateMovement()
-    {
-        if (isMobilePlatform)
-        {
-            
-        }
+    {        
         horizontalInput = Input.GetAxis("Horizontal");
         direction = new Vector3(horizontalInput, 0, 0);
         transform.Translate(direction * speed * Time.deltaTime);
@@ -81,16 +79,30 @@ public class PlayerController : MonoBehaviour
     {
         if (Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.UpArrow))
         {
-            SimpleShoot();
+            if (Time.time > canFire)
+            {
+                if (isMultipleShoot)
+                {
+                    MultipleShot();
+                }
+                else
+                {
+                    SimpleShot();
+                }
+            }
         }
     }
-    private void SimpleShoot()
+    private void SimpleShot()
     {
-        if (Time.time > canFire)
-        {
-            canFire = Time.time + fireRate;
-            Instantiate(laserPrefab, laserOrigin.position, Quaternion.identity);
-        }
+        canFire = Time.time + fireRate;
+        Instantiate(laserPrefab, centralLaserOrigin.position, Quaternion.identity);
+    }
+    private void MultipleShot()
+    {
+        canFire = Time.time + fireRate;
+        Instantiate(laserPrefab, centralLaserOrigin.position, Quaternion.identity);
+        Instantiate(laserPrefab, leftLaserOrigin.position, Quaternion.identity);
+        Instantiate(laserPrefab, rightLaserOrigin.position, Quaternion.identity);
     }
     
     private void AddMobileControllsListeners()
@@ -116,6 +128,19 @@ public class PlayerController : MonoBehaviour
 
         transform.localScale = new Vector3(xScale, yScale, zScale);
     }
+    private IEnumerator MultipleShootLifetime(float waitTime)
+    {
+        yield return new WaitForSeconds(waitTime);
+        isMultipleShoot = false;
+    }
+    #endregion
+    #region Public Methods
+    public void ActivateTripleShoot()
+    {
+        isMultipleShoot = true;
+        StartCoroutine(MultipleShootLifetime(5));
+    }
+    
     #endregion
     #region Unity Callback
 

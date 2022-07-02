@@ -8,6 +8,7 @@ public class LaserController : MonoBehaviour
     #region Variables
     [Header("Variables")]
     [SerializeField] private float speed = 8;
+    
     #endregion
     #region Unity Methods
     private void Update()
@@ -21,6 +22,10 @@ public class LaserController : MonoBehaviour
     {
         if(collision.gameObject.tag == GameTags.DeadZone)
         {
+            Destroy(this.gameObject);
+        }
+        if(collision.gameObject.tag == GameTags.Enemy)
+        {            
             Destroy(this.gameObject);
         }
     }
