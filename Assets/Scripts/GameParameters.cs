@@ -25,6 +25,11 @@ public enum EnemyRarity
     Blue,
     Red
 }
+public static class EnemyAnimParams 
+{
+    public static string OnEnemyDeath = "OnEnemyDeath";
+}
+
 
 
 

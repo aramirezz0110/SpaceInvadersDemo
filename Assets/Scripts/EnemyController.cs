@@ -2,13 +2,14 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-[RequireComponent(typeof(Rigidbody2D), typeof(BoxCollider2D))]
+[RequireComponent(typeof(Rigidbody2D), typeof(BoxCollider2D), typeof(Animator))]
 public class EnemyController : MonoBehaviour
 {
     #region Variables
     [Header("Enemy Variables")]
     [SerializeField] private EnemyRarity enemyRarity;
     [SerializeField] private float speed = 4.0f;
+    private Animator myAnimator;
     GameManager gameManagerInstance;
     private int damageResistance;
     private int scoreIncreaseRef;
@@ -19,6 +20,7 @@ public class EnemyController : MonoBehaviour
     private void Start()
     {
         gameManagerInstance = GameManager.Instance;
+        myAnimator = GetComponent<Animator>();
         SettingsByRarity();
         CalculatePowerUpSpawnProbability();
     }
@@ -80,7 +82,8 @@ public class EnemyController : MonoBehaviour
                 int randomPowerUp = Random.Range(0, gameManagerInstance.powerUps.Count);
                 Instantiate(gameManagerInstance.powerUps[randomPowerUp], transform.position, transform.rotation);
             }
-            Destroy(this.gameObject);            
+            ShowExplosionAnimation();
+            Destroy(this.gameObject, .18f);            
         }
     }
     #endregion
@@ -97,8 +100,10 @@ public class EnemyController : MonoBehaviour
         }
         if(other.gameObject.tag == GameTags.Player)
         {            
-            GameManager.Instance.SetGameOver();
-            Destroy(other.gameObject);            
+            GameManager.Instance.SetGameOver();            
+            Destroy(other.gameObject);
+            ShowExplosionAnimation();
+            Destroy(this.gameObject, 0.18f);
         }
     }
     private void CalculatePowerUpSpawnProbability()
@@ -126,6 +131,11 @@ public class EnemyController : MonoBehaviour
         {
             instancePowerUp = false;
         }
+    }
+    private void ShowExplosionAnimation()
+    {
+        speed = 0;
+        myAnimator.SetTrigger(EnemyAnimParams.OnEnemyDeath);
     }
     #endregion
 }
