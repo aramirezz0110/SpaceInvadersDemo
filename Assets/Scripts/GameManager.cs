@@ -8,7 +8,7 @@ public class GameManager : MonoBehaviour
     #region References 
     [Header("Levels Settings")]
     [SerializeField] private LevelsSettings levelsSettings;
-    public LevelSettings levelSettings;
+    [HideInInspector] public LevelSettings levelSettings;
     [Header("Player HUD Canvas")]
     [SerializeField] private GameObject playerHUDCanvas;
     [SerializeField] private TMP_Text scoreText;
@@ -22,7 +22,7 @@ public class GameManager : MonoBehaviour
     [Header("Background References")]
     [SerializeField] private Image gameBackGround;
     [Header("Power up references")]
-    public GameObject tripleShotPowerUp;
+    public List<GameObject> powerUps;
     #endregion
 
     #region Variables

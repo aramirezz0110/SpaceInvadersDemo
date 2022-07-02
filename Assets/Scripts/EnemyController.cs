@@ -77,7 +77,8 @@ public class EnemyController : MonoBehaviour
             IncreasePlayerScore();
             if (instancePowerUp)
             {
-                Instantiate(gameManagerInstance.tripleShotPowerUp, transform.position, transform.rotation);
+                int randomPowerUp = Random.Range(0, gameManagerInstance.powerUps.Count);
+                Instantiate(gameManagerInstance.powerUps[randomPowerUp], transform.position, transform.rotation);
             }
             Destroy(this.gameObject);            
         }

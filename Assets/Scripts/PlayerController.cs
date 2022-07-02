@@ -10,14 +10,18 @@ public class PlayerController : MonoBehaviour
 {
     #region Player Variables
     [Header("Variables")]
-    [SerializeField] private float speed = 10f;
+    [SerializeField] private float speed =5f;
+    [SerializeField] private float speedMultiplier = 2;
     [SerializeField] private float fireRate = 0.5f;
     private float canFire = -1f;
 
     private float horizontalLimit;
     private float horizontalInput;
     private Vector3 direction;
-    private bool isMultipleShoot;
+
+    private bool isMultipleShootActive;
+    private bool isSpeedBoosterActive;
+    private bool isShieldActive;
     [SerializeField] private bool isMobilePlatform;
 
     #endregion
@@ -29,6 +33,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private Transform centralLaserOrigin;
     [SerializeField] private Transform leftLaserOrigin;
     [SerializeField] private Transform rightLaserOrigin;
+    [SerializeField] private GameObject shieldVisualizer;
 
     [Header("Mobile Game Controller Canvas")]
     [SerializeField] private GameObject mobileControllersContainer;
@@ -42,6 +47,7 @@ public class PlayerController : MonoBehaviour
     private void Start()
     {
         SetMyScaleFactor();
+        shieldVisualizer.SetActive(false);
 
         gameObject.transform.position = playerOrigin.position;
         horizontalLimit = GameManager.Instance.horizontalLimit;
@@ -81,7 +87,7 @@ public class PlayerController : MonoBehaviour
         {
             if (Time.time > canFire)
             {
-                if (isMultipleShoot)
+                if (isMultipleShootActive)
                 {
                     MultipleShot();
                 }
@@ -128,19 +134,35 @@ public class PlayerController : MonoBehaviour
 
         transform.localScale = new Vector3(xScale, yScale, zScale);
     }
-    private IEnumerator MultipleShootLifetime(float waitTime)
+    private IEnumerator MultipleShootDownRoutine(float waitTime)
     {
         yield return new WaitForSeconds(waitTime);
-        isMultipleShoot = false;
+        isMultipleShootActive = false;
+    }
+    private IEnumerator SpeedBoosterDownRoutine(float waitTime)
+    {
+        yield return new WaitForSeconds(waitTime);
+        isSpeedBoosterActive = false;
+        speed /= speedMultiplier;
     }
     #endregion
     #region Public Methods
     public void ActivateTripleShoot()
     {
-        isMultipleShoot = true;
-        StartCoroutine(MultipleShootLifetime(5));
+        isMultipleShootActive = true;
+        StartCoroutine(MultipleShootDownRoutine(5));
     }
-    
+    public void ActivateSpeedBooster()
+    {
+        isSpeedBoosterActive = true;
+        speed *= speedMultiplier;
+        StartCoroutine(SpeedBoosterDownRoutine(5));
+    }
+    public void ActivateShield()
+    {
+        isShieldActive = true;
+        shieldVisualizer.SetActive(true);
+    }
     #endregion
     #region Unity Callback
 

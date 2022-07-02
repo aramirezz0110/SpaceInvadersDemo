@@ -4,8 +4,8 @@ using UnityEngine;
 [RequireComponent(typeof(Rigidbody2D), typeof(CircleCollider2D))]
 public class PowerUpController : MonoBehaviour
 {
+    [SerializeField] private PowerUpType powerUpType;
     [SerializeField] private float speed=2;
-    [SerializeField] private PlayerController playerController;
     void Update()
     {
         transform.Translate(Vector3.down * speed * Time.deltaTime);
@@ -15,7 +15,26 @@ public class PowerUpController : MonoBehaviour
         if(collision.gameObject.tag == GameTags.Player)
         {
             print("Collision with player");
-            collision.gameObject.GetComponent<PlayerController>().ActivateTripleShoot();
+            switch (powerUpType)
+            {
+                case PowerUpType.TripleShot:
+                    {
+                        collision.gameObject.GetComponent<PlayerController>().ActivateTripleShoot();
+                        break;
+                    }
+                case PowerUpType.Speed:
+                    {
+                        collision.gameObject.GetComponent<PlayerController>().ActivateTripleShoot();
+                        break;
+                    }
+                case PowerUpType.Shield:
+                    {
+                        collision.gameObject.GetComponent<PlayerController>().ActivateTripleShoot();
+                        break;
+                    }
+                default: break;
+            }
+            
             Destroy(this.gameObject);
         }
         if(collision.gameObject.tag == GameTags.DeadZone)
@@ -24,3 +43,10 @@ public class PowerUpController : MonoBehaviour
         }
     }
 }
+enum PowerUpType
+{ 
+    TripleShot,
+    Speed,
+    Shield
+}
+
