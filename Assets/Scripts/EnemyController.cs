@@ -2,7 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-[RequireComponent(typeof(Rigidbody2D), typeof(BoxCollider2D), typeof(Animator))]
+[RequireComponent(typeof(Rigidbody2D), typeof(BoxCollider2D))]
+[RequireComponent(typeof(AudioSource), typeof(Animator))]
 public class EnemyController : MonoBehaviour
 {
     #region Variables
@@ -10,6 +11,9 @@ public class EnemyController : MonoBehaviour
     [SerializeField] private EnemyRarity enemyRarity;
     [SerializeField] private float speed = 4.0f;
     private Animator myAnimator;
+    [Header("Audio references")]
+    [SerializeField] private AudioSource explosionAudioSource;
+    private float animationWaitTime = .3f;
     GameManager gameManagerInstance;
     private int damageResistance;
     private int scoreIncreaseRef;
@@ -83,7 +87,8 @@ public class EnemyController : MonoBehaviour
                 Instantiate(gameManagerInstance.powerUps[randomPowerUp], transform.position, transform.rotation);
             }
             ShowExplosionAnimation();
-            Destroy(this.gameObject, .18f);            
+            explosionAudioSource.Play();
+            Destroy(this.gameObject,animationWaitTime);            
         }
     }
     #endregion
@@ -100,10 +105,10 @@ public class EnemyController : MonoBehaviour
         }
         if(other.gameObject.tag == GameTags.Player)
         {            
-            GameManager.Instance.SetGameOver();            
-            Destroy(other.gameObject);
+            GameManager.Instance.SetGameOver(); 
             ShowExplosionAnimation();
-            Destroy(this.gameObject, 0.18f);
+            Destroy(other.gameObject,animationWaitTime);
+            Destroy(this.gameObject,animationWaitTime);
         }
     }
     private void CalculatePowerUpSpawnProbability()

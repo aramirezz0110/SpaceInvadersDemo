@@ -1,11 +1,13 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-[RequireComponent(typeof(Rigidbody2D), typeof(CircleCollider2D))]
+[RequireComponent(typeof(Rigidbody2D), typeof(CircleCollider2D),typeof(AudioSource))]
 public class PowerUpController : MonoBehaviour
 {
     [SerializeField] private PowerUpType powerUpType;
     [SerializeField] private float speed=2;
+    [Header("Audio References")]
+    [SerializeField] private AudioSource powerUpAudioSource;
     void Update()
     {
         transform.Translate(Vector3.down * speed * Time.deltaTime);
@@ -13,11 +15,10 @@ public class PowerUpController : MonoBehaviour
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if(collision.gameObject.tag == GameTags.Player)
-        {
-            print("Collision with player");
+        {            
             switch (powerUpType)
             {
-                case PowerUpType.TripleShot:
+                case PowerUpType.TripleShoot:
                     {
                         collision.gameObject.GetComponent<PlayerController>().ActivateTripleShoot();
                         break;
@@ -34,8 +35,8 @@ public class PowerUpController : MonoBehaviour
                     }
                 default: break;
             }
-            
-            Destroy(this.gameObject);
+            powerUpAudioSource.Play();
+            Destroy(this.gameObject,.25f);
         }
         if(collision.gameObject.tag == GameTags.DeadZone)
         {
@@ -45,7 +46,7 @@ public class PowerUpController : MonoBehaviour
 }
 enum PowerUpType
 { 
-    TripleShot,
+    TripleShoot,
     Speed,
     Shield
 }

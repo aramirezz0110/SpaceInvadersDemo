@@ -2,10 +2,8 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
-using UnityEngine.EventSystems;
-using UnityEngine.InputSystem;
 
+[RequireComponent(typeof(BoxCollider2D))]
 public class PlayerController : MonoBehaviour
 {
     #region Player Variables
@@ -22,6 +20,11 @@ public class PlayerController : MonoBehaviour
     private bool isMultipleShootActive;
     private bool isSpeedBoosterActive;
     private bool isShieldActive;
+
+    private bool isMovingLeft;
+    private bool isMovingRight;  
+    private bool isShooting;
+
     [SerializeField] private bool isMobilePlatform;
 
     #endregion
@@ -34,37 +37,44 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private Transform leftLaserOrigin;
     [SerializeField] private Transform rightLaserOrigin;
     [SerializeField] private GameObject shieldVisualizer;
-
-    [Header("Mobile Game Controller Canvas")]
-    [SerializeField] private GameObject mobileControllersContainer;
-    [SerializeField] private Button moveLeftButton;
-    [SerializeField] private Button moveRigthButton;
-    [SerializeField] private Button shotButton;
+    [Header("Audio References")]
+    [SerializeField] private AudioSource audioSource;
+    [SerializeField] private AudioClip shootAudioClip;
     #endregion
 
-    
     #region Unity Methods
     private void Start()
     {
         SetMyScaleFactor();
         shieldVisualizer.SetActive(false);
-
         gameObject.transform.position = playerOrigin.position;
         horizontalLimit = GameManager.Instance.horizontalLimit;
-
-        if (GameManager.Instance.IsMobilePlatform())
-        {            
-            AddMobileControllsListeners();
-        }
-        
+        audioSource.clip = shootAudioClip;
     }
     private void Update()
-    {
+    {        
         CalculateMovement();
         FireAction();
     }
     #endregion
-
+    #region Public Methods
+    public void ActivateTripleShoot()
+    {
+        isMultipleShootActive = true;
+        StartCoroutine(MultipleShootDownRoutine(5));
+    }
+    public void ActivateSpeedBooster()
+    {
+        isSpeedBoosterActive = true;
+        speed *= speedMultiplier;
+        StartCoroutine(SpeedBoosterDownRoutine(5));
+    }
+    public void ActivateShield()
+    {
+        isShieldActive = true;
+        shieldVisualizer.SetActive(true);
+    }
+    #endregion
     #region Private Methods
     private void CalculateMovement()
     {        
@@ -89,42 +99,29 @@ public class PlayerController : MonoBehaviour
             {
                 if (isMultipleShootActive)
                 {
-                    MultipleShot();
+                    MultipleShoot();
                 }
                 else
                 {
-                    SimpleShot();
+                    SimpleShoot();
                 }
+                audioSource.Play();
             }
         }
     }
-    private void SimpleShot()
+    private void SimpleShoot()
     {
         canFire = Time.time + fireRate;
         Instantiate(laserPrefab, centralLaserOrigin.position, Quaternion.identity);
     }
-    private void MultipleShot()
+    private void MultipleShoot()
     {
         canFire = Time.time + fireRate;
         Instantiate(laserPrefab, centralLaserOrigin.position, Quaternion.identity);
         Instantiate(laserPrefab, leftLaserOrigin.position, Quaternion.identity);
         Instantiate(laserPrefab, rightLaserOrigin.position, Quaternion.identity);
-    }
+    }  
     
-    private void AddMobileControllsListeners()
-    {
-        
-        moveRigthButton.onClick.AddListener(MoveRight);
-        shotButton.onClick.AddListener(FireAction);
-    }
-    private void MoveLeft()
-    {
-        horizontalInput = -1;
-    }
-    private void MoveRight()
-    {
-        horizontalInput = 1;
-    }
     private void SetMyScaleFactor()
     {
         float tempScale = GameManager.Instance.levelSettings.scaleFactor;
@@ -145,26 +142,5 @@ public class PlayerController : MonoBehaviour
         isSpeedBoosterActive = false;
         speed /= speedMultiplier;
     }
-    #endregion
-    #region Public Methods
-    public void ActivateTripleShoot()
-    {
-        isMultipleShootActive = true;
-        StartCoroutine(MultipleShootDownRoutine(5));
-    }
-    public void ActivateSpeedBooster()
-    {
-        isSpeedBoosterActive = true;
-        speed *= speedMultiplier;
-        StartCoroutine(SpeedBoosterDownRoutine(5));
-    }
-    public void ActivateShield()
-    {
-        isShieldActive = true;
-        shieldVisualizer.SetActive(true);
-    }
-    #endregion
-    #region Unity Callback
-
     #endregion
 }

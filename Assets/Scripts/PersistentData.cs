@@ -11,8 +11,7 @@ public class PersistentData : MonoBehaviour
         get { return _levelSelected; } 
         set 
         { 
-            _levelSelected = value;
-            print(_levelSelected);
+            _levelSelected = value;            
         }  
     }
     private void Awake()
