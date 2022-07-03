@@ -19,3 +19,5 @@ Singleton class are used to send data between scenes.
 2 scenes, Main Menu and Game Scene.
 Score multiplier of distance enemy destroyed.
 
+# Unity Version
+The project was created using Unity 2021.2.9f1
